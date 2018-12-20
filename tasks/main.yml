@@ -1,0 +1,46 @@
+---
+- fail:
+  msg: 'ERROR: {{ ansible_os_family }} is not supported by the EC2-Metadata module'
+  when:
+    - ansible_os_family != 'RedHat'
+    - ansible_os_family != 'Debian'
+
+- name: Install curl (Debian)
+  apt:
+    name: curl
+    state: present
+  when:
+    - ansible_os_family == 'Debian'
+  tags:
+    - ec2-metadata
+
+- name: Install curl (RedHat)
+  yum:
+    name: curl
+    state: present
+  when:
+    - ansible_os_family == 'RedHat'
+  tags:
+    - ec2-metadata
+
+- name: Install local copy of ec2-metadata to /usr/local/bin
+  copy:
+    src: ec2-metadata
+    dest: /usr/local/bin/ec2-metadata
+    owner: root
+    group: root
+    mode: 0755
+  when: not ec2_metadata_download
+  tags:
+    - ec2-metadata
+
+- name: Download latest ec2-metadata from official site
+  get_url:
+    url: "{{ ec2_metadata_url }}"
+    dest: /usr/local/bin/ec2-metadata
+    owner: root
+    group: root
+    mode: 0755
+  when: ec2_metadata_download
+  tags:
+    - ec2-metadata

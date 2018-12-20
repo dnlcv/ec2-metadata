@@ -1,0 +1,7 @@
+# Install Provision_Docker Module
+- name: provision_docker
+  src: https://github.com/chrismeyersfsu/provision_docker.git
+
+# Install Hosts File Module
+- name: hosts
+  src: https://github.com/reallyenglish/ansible-role-hosts.git

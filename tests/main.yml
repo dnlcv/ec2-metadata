@@ -1,0 +1,23 @@
+---
+- name: Bring up docker containers
+  hosts: localhost
+  gather_facts: false
+  vars:
+    inventory:
+      - name: ec2meta1
+        image: "chrismeyers/centos6"
+  roles:
+    - { role: provision_docker, provision_docker_inventory: "{{inventory}}" }
+
+- name: Install EC2-Metadata Script
+  hosts: docker_containers
+  become: True
+  become_user: root
+  roles:
+    - ec2-metadata
+  post_tasks:
+    - name: Check ec2-metadata Version
+      command: ls -l /usr/local/bin/ec2-metadata
+      register: ec2_metadata_help_output
+    - debug: msg="{{ ec2_metadata_help_output.stdout }}"
+    - debug: msg="{{ ec2_metadata_help_output.stderr }}"
