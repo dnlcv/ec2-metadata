@@ -1,4 +1,4 @@
 ---
 ### Common Options
-ec2_metadata_download: true
+ec2_metadata_download: false
 ec2_metadata_url: "http://s3.amazonaws.com/ec2metadata/ec2-metadata"
