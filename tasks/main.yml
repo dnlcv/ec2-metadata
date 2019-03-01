@@ -1,6 +1,6 @@
 ---
 - fail:
-  msg: 'ERROR: {{ ansible_os_family }} is not supported by the EC2-Metadata module'
+    msg: 'ERROR: {{ ansible_os_family }} is not supported by the EC2-Metadata module'
   when:
     - ansible_os_family != 'RedHat'
     - ansible_os_family != 'Debian'
